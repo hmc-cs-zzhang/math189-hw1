@@ -55,13 +55,22 @@ def find_optimal_reg():
 ### Part C ###
 
 def part_c():
+	sorted_lambdas = sorted(lambdas)
+
 	# Plot 1
 	thetas_mag = [ numpy.linalg.norm(t) for t in thetas ]
-	plt.plot(lambdas, thetas_mag, '8')
+	plot_1_dict = {}
+	for i in range(len(lambdas)):
+		plot_1_dict[lambdas[i]] = thetas_mag[i]
+	
+	plt.plot(sorted_lambdas, [plot_1_dict[l] for l in sorted_lambdas])
 
 	# plot 2
 	mses = [mse(wt) for wt in thetas]
-	plt.plot(lambdas, mses, '^')
+	plot_2_dict = {}
+	for i in range(len(lambdas)):
+		plot_2_dict[lambdas[i]] = mses[i]	
+	plt.plot(sorted_lambdas, [plot_2_dict[l] for l in sorted_lambdas])
 
 	plt.show()
 
@@ -148,12 +157,18 @@ def part_e(X_train, X_val):
 			print('-- finishing iteration {} - objective {:5.4f} - grad {}'.format(
 				len(objective_train), objective_train[-1], numpy.linalg.norm(grad_theta)
 			))
+
+	plt.plot(range(len(objective_train)), objective_train, color='blue')
+	plt.plot(range(len(objective_val)), objective_val, color='red')
+	plt.xlabel('Iteration')
+	plt.ylabel('RMSE')
+	plt.show()
 	
 	print('==> Distance between intercept and orig: {}'.format(numpy.abs(theta_opt.item(0) - b_).item(0)))
 	print('==> Distance between theta and original: {}'.format(
 		numpy.linalg.norm(theta_ - theta_opt[1:])
 	))
 
-# train_x_e = train_x[:,1:]
-# val_x_e = validation_x[:,1:]
-# part_e(train_x_e, val_x_e)
+train_x_e = train_x[:,1:]
+val_x_e = validation_x[:,1:]
+part_e(train_x_e, val_x_e)
