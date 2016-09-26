@@ -2,7 +2,7 @@ import numpy as np
 import pandas
 import matplotlib.pyplot as plt
 from scipy import linalg, sparse, misc
-from sklearn.preprocessing import OneHotEncoder
+# from sklearn.preprocessing import OneHotEncoder
 
 # data loaded into X_bin_* and y_bin_*
 data_train = pandas.read_csv("mnist_train.csv", engine='python', sep=',').as_matrix()
@@ -115,13 +115,15 @@ def part_a_graph_1():
 
 	plt.ylim([-8500, 500])
 	plt.xlim([-20,520])
-	plt.plot([x for x in range(len(objective_grad))], objective_grad, color='blue')
-	plt.plot([x for x in range(len(objective_newton))], objective_newton, color='red')
-	plt.ylabel('Iteration')
-	plt.ylabel('Likelihood')
+	gradPlot, = plt.plot([x for x in range(len(objective_grad))], objective_grad, color='blue')
+	newtonPlot, = plt.plot([x for x in range(len(objective_newton))], objective_newton, color='red')
+	plt.xlabel('Iteration')
+	plt.ylabel('Likelihood')	
+	plt.legend((gradPlot, newtonPlot), ('Gradient descent', 'Newton'), loc=3)
+	plt.title('MNIST Classification with Gradient descent and Newton')
 	plt.show()
 
-# part_a_graph_1()
+part_a_graph_1()
 
 def get_accuracy_for_lambda(l):
 	theta_newton, objective_newton = linreg_newton(x_bin_train, y_bin_train, 
@@ -141,9 +143,11 @@ def get_accuracy_for_lambda(l):
 def part_a_graph_2():
 	ls = [1e-6] + [3.0 * i for i in range(1, 10)]
 	plt.plot(ls, [get_accuracy_for_lambda(l) for l in ls], color='blue')	
-	plt.ylim([0, 1.1])
-	plt.ylabel('Accuracys')
+	plt.ylim([0, 1.1])	
+	plt.title('MNIST Binary Labels Accuracy')
+	plt.xlabel('Accuracy')
 	plt.ylabel('Lambda')
+
 	plt.show()
 
 # part_a_graph_2()
